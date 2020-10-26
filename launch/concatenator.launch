@@ -1,0 +1,17 @@
+<launch>
+
+    <arg name="n_clouds" default="4"/>
+    <arg name="cloud_1" default="/ti_mmwave_front_radar/radar_scan_pcl"/>
+    <arg name="cloud_2" default="/ti_mmwave_left_radar/radar_scan_pcl"/>
+    <arg name="cloud_3" default="/ti_mmwave_right_radar/radar_scan_pcl"/>
+    <arg name="cloud_4" default="/ti_mmwave_rear_radar/radar_scan_pcl"/>
+
+    <node name="cloud_concatenator" pkg="cloud_concatenator" type="cloud_concatenator_node" output="screen">
+        <param name="n_clouds" value="$(arg n_clouds)"/>
+        <remap from="pc_1" to="$(arg cloud_1)"/>
+        <remap from="pc_2" to="$(arg cloud_2)"/>
+        <remap from="pc_3" to="$(arg cloud_3)"/>
+        <remap from="pc_4" to="$(arg cloud_4)"/>
+    </node>
+
+</launch>
