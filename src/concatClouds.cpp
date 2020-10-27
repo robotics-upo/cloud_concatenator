@@ -189,7 +189,7 @@ int main(int argc, char** argv)
   // --- Inicializacion de ROS. No hace falta tocar
   ros::init(argc, argv, "concat_pcl");
 
-  ros::NodeHandle nh;
+  ros::NodeHandle nh, pnh("~");
 
   tfListener = new tf::TransformListener();
 
@@ -198,7 +198,7 @@ int main(int argc, char** argv)
   nh.getParam("sychronization_margin", synch_margin_queue);
 
   int n_clouds = 4;
-  nh.getParam("n_clouds", n_clouds);
+  pnh.getParam("n_clouds", n_clouds);
 
   if (n_clouds < 2 || n_clouds > 9) {
     ROS_FATAL("The number of clouds should be between 2 and 9");
@@ -280,6 +280,7 @@ int main(int argc, char** argv)
       sync_9->registerCallback(boost::bind(&callback9, _1, _2, _3, _4, _5, _6, _7, _8, _9));
       break;
   }
+  ROS_INFO("Cloud Concatenator --> Expecting %d clouds", n_clouds);
   ros::spin();
 
   delete sync_2, sync_3, sync_4, sync_5, sync_6, sync_7, sync_8, sync_9;
