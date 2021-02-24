@@ -135,6 +135,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
  add_executable(${PROJECT_NAME}_node src/concatClouds.cpp)
+ add_executable(async_concatenator_node src/async_concatenator.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -150,7 +151,9 @@ include_directories(
 target_link_libraries(${PROJECT_NAME}_node
    ${catkin_LIBRARIES}
 )
-
+target_link_libraries(async_concatenator_node
+   ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############
