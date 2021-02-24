@@ -23,7 +23,7 @@ public:
         pnh_.param("frequency", freq, 10.0);
         time_interval_ = 1.0/freq;
         timer_ = pnh_.createTimer(ros::Duration(time_interval_), &AsyncCloudConcatenator::timerCallback, this);
-        full_cloud_pub_ = pnh_.advertise<pcl::PointCloud<pcl::PointXY>>("full_cloud", 1);
+        full_cloud_pub_ = pnh_.advertise<pcl::PointCloud<pcl::PointXY>>("/full_cloud", 1);
 
         pnh_.param("target_frame", target_frame_, (std::string)"base_link");
 
