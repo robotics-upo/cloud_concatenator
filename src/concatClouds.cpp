@@ -13,7 +13,7 @@ tf::TransformListener * tfListener;
 ros::Publisher pub_points_;
 
 void concatenateClouds(std::vector<sensor_msgs::PointCloud2::ConstPtr> &msg_vector, sensor_msgs::PointCloud2 &points_msg2) {
-  pcl::PointCloud<pcl::PointXYZ> cloud, curr_cloud, transformed_cloud;
+  pcl::PointCloud<pcl::PointXYZI> cloud, curr_cloud, transformed_cloud;
   tf::StampedTransform curr_transform;
 
   const auto &msg_0 = *(msg_vector.at(0));
