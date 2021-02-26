@@ -4,7 +4,6 @@
 #include <pcl/point_types.h>
 #include <boost/foreach.hpp>
 
-
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl_ros/transforms.h>
 
@@ -23,7 +22,7 @@ public:
         pnh_.param("frequency", freq, 10.0);
         time_interval_ = 1.0/freq;
         timer_ = pnh_.createTimer(ros::Duration(time_interval_), &AsyncCloudConcatenator::timerCallback, this);
-        full_cloud_pub_ = pnh_.advertise<pcl::PointCloud<pcl::PointXY>>("/full_cloud", 1);
+        full_cloud_pub_ = pnh_.advertise<pcl::PointCloud<pcl::PointXYZI>>("/full_cloud", 1);
 
         pnh_.param("target_frame", target_frame_, (std::string)"base_link");
 
@@ -42,11 +41,12 @@ private:
         insertPoints(cloud_2_vec_, final_cloud_);
         insertPoints(cloud_3_vec_, final_cloud_);
         insertPoints(cloud_4_vec_, final_cloud_);
+        pcl_conversions::toPCL(ros::Time::now(), final_cloud_.header.stamp);
         final_cloud_.header.frame_id = target_frame_;
         full_cloud_pub_.publish(final_cloud_);
         
     }
-    void insertPoints(std::vector<pcl::PointCloud<pcl::PointXYZ>> &in_cloud, pcl::PointCloud<pcl::PointXYZ> &result_cloud){
+    void insertPoints(std::vector<pcl::PointCloud<pcl::PointXYZI>> &in_cloud, pcl::PointCloud<pcl::PointXYZI> &result_cloud){
         
         for(auto &it: in_cloud){
             for(auto &point_it: it){
@@ -62,7 +62,7 @@ private:
         ROS_INFO("Callback 1");
         sensor_msgs::PointCloud2 msg_target_frame;
         pcl_ros::transformPointCloud(target_frame_, *msg, msg_target_frame, tf_listener_);
-        pcl::PointCloud<pcl::PointXYZ> cloud;
+        pcl::PointCloud<pcl::PointXYZI> cloud;
         pcl::fromROSMsg(msg_target_frame, cloud);
         cloud_1_vec_.push_back(cloud);
     }
@@ -72,7 +72,7 @@ private:
 
         sensor_msgs::PointCloud2 msg_target_frame;
         pcl_ros::transformPointCloud(target_frame_, *msg, msg_target_frame, tf_listener_);
-        pcl::PointCloud<pcl::PointXYZ> cloud;
+        pcl::PointCloud<pcl::PointXYZI> cloud;
         pcl::fromROSMsg(msg_target_frame, cloud);
         cloud_2_vec_.push_back(cloud);
     }
@@ -82,7 +82,7 @@ private:
 
         sensor_msgs::PointCloud2 msg_target_frame;
         pcl_ros::transformPointCloud(target_frame_, *msg, msg_target_frame, tf_listener_);
-        pcl::PointCloud<pcl::PointXYZ> cloud;
+        pcl::PointCloud<pcl::PointXYZI> cloud;
         pcl::fromROSMsg(msg_target_frame, cloud);
         cloud_3_vec_.push_back(cloud);
     }
@@ -92,7 +92,7 @@ private:
         
         sensor_msgs::PointCloud2 msg_target_frame;
         pcl_ros::transformPointCloud(target_frame_, *msg, msg_target_frame, tf_listener_);
-        pcl::PointCloud<pcl::PointXYZ> cloud;
+        pcl::PointCloud<pcl::PointXYZI> cloud;
         pcl::fromROSMsg(msg_target_frame, cloud);
         cloud_4_vec_.push_back(cloud);
 
@@ -105,8 +105,8 @@ private:
     ros::Subscriber cloud_1_sub_, cloud_2_sub_, cloud_3_sub_, cloud_4_sub_;
     ros::Publisher full_cloud_pub_;
 
-    std::vector<pcl::PointCloud<pcl::PointXYZ>> cloud_1_vec_, cloud_2_vec_, cloud_3_vec_, cloud_4_vec_;
-    pcl::PointCloud<pcl::PointXYZ> final_cloud_;
+    std::vector<pcl::PointCloud<pcl::PointXYZI>> cloud_1_vec_, cloud_2_vec_, cloud_3_vec_, cloud_4_vec_;
+    pcl::PointCloud<pcl::PointXYZI> final_cloud_;
 
     double time_interval_;
     std::string target_frame_;
