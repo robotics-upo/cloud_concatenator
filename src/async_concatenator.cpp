@@ -44,6 +44,10 @@ private:
         pcl_conversions::toPCL(ros::Time::now(), final_cloud_.header.stamp);
         final_cloud_.header.frame_id = target_frame_;
         full_cloud_pub_.publish(final_cloud_);
+        cloud_1_vec_.clear();
+        cloud_2_vec_.clear();
+        cloud_3_vec_.clear();
+        cloud_4_vec_.clear();
         
     }
     void insertPoints(std::vector<pcl::PointCloud<pcl::PointXYZI>> &in_cloud, pcl::PointCloud<pcl::PointXYZI> &result_cloud){
