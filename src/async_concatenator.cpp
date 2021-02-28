@@ -51,7 +51,7 @@ private:
     }
     void insertPoints(std::vector<pcl::PointCloud<pcl::PointXYZI>> &in_cloud, pcl::PointCloud<pcl::PointXYZI> &result_cloud){
         
-        if(in_cloud.points.size() == 0)
+        if(in_cloud.size() == 0)
             return;
 
         for(auto &it: in_cloud){
