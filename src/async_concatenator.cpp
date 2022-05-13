@@ -32,13 +32,13 @@ public:
         spinner_.start();
         ros::waitForShutdown();
     }
-
+ 
 private:
     void timerCallback(const ros::TimerEvent& event){
 
 
         final_cloud_.points.clear();
-        ROS_INFO("Number of clouds: [%d, %d, %d, %d]", cloud_1_vec_.size(),cloud_2_vec_.size(),cloud_3_vec_.size(),cloud_4_vec_.size() );
+        ROS_INFO("Number of clouds: [%ld, %ld, %ld, %ld]", cloud_1_vec_.size(),cloud_2_vec_.size(),cloud_3_vec_.size(),cloud_4_vec_.size() );
         insertPoints(cloud_1_vec_, final_cloud_);
         insertPoints(cloud_2_vec_, final_cloud_);
         insertPoints(cloud_3_vec_, final_cloud_);
